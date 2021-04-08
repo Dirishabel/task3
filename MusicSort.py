@@ -11,7 +11,7 @@ def mp3_redirect(music, src_dir, dst_dir):
     audiofile = mp3_tagger.MP3File(src_dir+"/"+music)
     tags_music = audiofile.get_tags().get('ID3TagV1')            
     if not tags_music.get('artist') or not tags_music.get('album'):
-        continue
+        return 0
     if not tags_music.get('song'):
         new_name = music
     else:
@@ -24,8 +24,8 @@ def mp3_redirect(music, src_dir, dst_dir):
     os.replace(main_route+'/'+music,  re.sub(r'[?]', '', (new_dir+'/'+new_name)))
 
 @click.command()
-@click.option('--src-dir', '-s', default='.', help='Sourse directory.')
-@click.option('--dst-dir', '-d', default='.', help='Destination derectory.')
+@click.option('--src-dir', '-s', default='', help='Sourse directory.')
+@click.option('--dst-dir', '-d', default='', help='Destination derectory.')
 def main(src_dir, dst_dir ):
     print(src_dir)
     print(dst_dir)
@@ -35,7 +35,7 @@ def main(src_dir, dst_dir ):
             try:
                 mp3_redirect(music, src_dir, dst_dir)
             except:
-                continue
+                pass
 
 if __name__ == "__main__":
     main()
